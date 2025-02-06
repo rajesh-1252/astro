@@ -11,6 +11,29 @@ return {
           -- ["L"] = { "<cmd>bn<cr>", desc = "Buffer next" },
           -- ["H"] = { "<cmd>bp<cr>", desc = "Buffer prev" },
           --
+          ["<leader>lx"] = { "<cmd>Telescope diagnostics<CR>", desc = "Open Workspace Diagnostics (Telescope)" },
+
+          -- Keymap to open current buffer diagnostics in Telescope
+          ["<leader>lX"] = {
+            "<cmd>Telescope diagnostics bufnr=0<CR>",
+            desc = "Open Current Buffer Diagnostics (Telescope)",
+          },
+          ["<leader>lo"] = { "<cmd>e ~/.config/nvim/vim_shortcuts.md<CR>", desc = "Open Vim Shortcuts" },
+          ["<leader>lc"] = {
+            "<cmd>!tmux new-session -d -s nvim_config<CR>",
+            desc = "Create new tmux session: nvim_config",
+          },
+
+          ["<leader>ln"] = {
+            function()
+              require("telescope.builtin").find_files {
+                prompt_title = "Find Notes",
+                cwd = "~/Desktop/notes", -- Set directory to ~/notes
+                hidden = true, -- Show hidden files
+              }
+            end,
+            desc = "Find Notes",
+          },
           L = {
             function() require("astrocore.buffer").nav(vim.v.count1) end,
             desc = "Next buffer",
@@ -60,8 +83,38 @@ return {
         n = {
           -- this mapping will only be set in buffers with an LSP attached
           K = {
-            function() vim.lsp.buf.hover() end,
-            desc = "Hover symbol details",
+            -- function() vim.lsp.buf.hover() end,
+            -- desc = "Hover symbol details",
+            --
+            function()
+              -- Check if a floating window is open, and focus it
+              for _, win in pairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_win_get_config(win).relative ~= "" then
+                  vim.api.nvim_set_current_win(win)
+                  return
+                end
+              end
+
+              -- Get the word under the cursor
+              local cursor_word = vim.fn.expand "<cword>"
+              local cursor_pos = vim.api.nvim_win_get_cursor(0)
+              local line = cursor_pos[1] - 1
+              local col = cursor_pos[2]
+
+              -- Get diagnostics at the exact cursor position
+              local diagnostics = vim.diagnostic.get(0, { lnum = line })
+              for _, diag in ipairs(diagnostics) do
+                if diag.col <= col and col < diag.end_col then
+                  vim.diagnostic.open_float()
+                  return
+                end
+              end
+
+              -- If no diagnostic found, check LSP hover
+              local clients = vim.lsp.get_active_clients { bufnr = 0 }
+              if #clients > 0 then vim.lsp.buf.hover() end
+            end,
+            desc = "Smart hover (diagnostic on word, LSP hover, focus floating window)",
           },
           ["<leader>ll"] = { "za", desc = "Toggle fold" },
           -- condition for only server with declaration capabilities
