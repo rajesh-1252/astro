@@ -12,6 +12,7 @@ return {
           -- ["H"] = { "<cmd>bp<cr>", desc = "Buffer prev" },
           --
           ["<leader>lx"] = { "<cmd>Telescope diagnostics<CR>", desc = "Open Workspace Diagnostics (Telescope)" },
+          ["YY"] = { "va{Vy}", desc = "copy functions" },
 
           -- Keymap to open current buffer diagnostics in Telescope
           ["<leader>lX"] = {
@@ -28,7 +29,7 @@ return {
             function()
               require("telescope.builtin").find_files {
                 prompt_title = "Find Notes",
-                cwd = "~/Desktop/notes", -- Set directory to ~/notes
+                cwd = "~/Desktop/knowlegeDB/1.quickNotes", -- Set directory to ~/notes
                 hidden = true, -- Show hidden files
               }
             end,
