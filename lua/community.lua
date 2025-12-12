@@ -15,7 +15,9 @@ return {
   { import = "astrocommunity.pack.cpp" },
   { import = "astrocommunity.pack.tailwindcss" },
   { import = "astrocommunity.pack.docker" },
-  { import = "astrocommunity.media.vim-wakatime" },
+  { import = "astrocommunity.completion.cmp-spell" },
+  { import = "astrocommunity.media.img-clip-nvim" },
+  -- { import = "astrocommunity.motion.flash-nvim" },
 
   -- import/override with your plugins folder
 }

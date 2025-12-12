@@ -17,5 +17,13 @@ return {
         never_show = { ".git" },
       },
     },
+    window = {
+      mappings = {
+        [","] = {
+          function() vim.cmd "Neotree ../" end,
+          desc = "level down",
+        },
+      },
+    },
   },
 }

@@ -28,7 +28,7 @@ return {
     },
   },
   opts = {
-    dir = vim.env.HOME .. "/Desktop/knowlegeDB", -- specify the vault location. no need to call 'vim.fn.expand' here
+    dir = vim.env.HOME .. "/Desktop/notes/knowlegeDB", -- specify the vault location. no need to call 'vim.fn.expand' here
     use_advanced_uri = true,
     finder = "telescope.nvim",
 

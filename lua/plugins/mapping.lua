@@ -24,6 +24,10 @@ return {
             "<cmd>!tmux new-session -d -s nvim_config<CR>",
             desc = "Create new tmux session: nvim_config",
           },
+          ["<leader>r"] = {
+            function() require("telescope.builtin").lsp_references() end,
+            desc = "Find references",
+          },
 
           ["<leader>ln"] = {
             function()
@@ -46,6 +50,7 @@ return {
           ["<A-j>"] = { ":m .+1<CR>==", desc = " move down" },
           ["<A-k>"] = { ":m .-2<CR>==", desc = "move up" },
           ["<Leader>bn"] = { "<cmd>tabnew<cr>", desc = "New tab" },
+
           ["<leader>ll"] = { "za", desc = "Toggle fold" },
           ["<Leader>bD"] = {
             function()
@@ -68,6 +73,17 @@ return {
         v = {
           ["<A-j>"] = { ":m '>+1<CR>gv=gv", desc = " move down" },
           ["<A-k>"] = { ":m '>-2<CR>gv=gv", desc = "move up" },
+  ["<leader>fs"] = {
+      function()
+  vim.lsp.buf.format {
+    range = {
+      ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+      ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+    },
+  }
+      end,
+      desc = "Format selected range",
+    },
         },
         i = {
           ["<A-k>"] = { "<Esc>:m .-2<CR>==gi", desc = "move up" },
